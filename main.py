@@ -1,16 +1,6 @@
-from datetime import datetime
-
-
-def get_time():
-    current_time = datetime.now().strftime("%I:%M %p")
-    return current_time
-def get_date():
-    current_date = datetime.now().strftime("%d %B %Y")
-    return current_date
-def greet():
-    print("FRIDAY: Hello! I am FRIDAY version 0.0")
-    print("FRIDAY: How can i assist you today?")
-    print("Type 'help' to see available commands.")
+from commands.greetings import greet
+from commands.time_commands import get_time
+from commands.date_commands import get_date
 def process_command(command):
     if command in ["hello", "hi", "hey"]:
         print("FRIDAY: Hello! how are you?")

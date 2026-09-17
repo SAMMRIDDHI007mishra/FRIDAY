@@ -2,6 +2,7 @@ from commands.greetings import greet
 from commands.time_commands import get_time
 from commands.date_commands import get_date
 
+from memory import remember, recall, forget
 
 def clean_command(command):
     command = command.lower()
@@ -48,6 +49,12 @@ def get_intent(command):
     elif command in ["what can you do", "help", "commands"]:
         return "help"
 
+    elif command.startswith("remember"):
+        return "remember"
+    elif command.startswith("what do you remember about "):
+        return "recall"
+    elif command.startswith("forget "):
+        return "forget"
     elif command in ["thanks", "thank you"]:
         return "thanks"
 
@@ -89,6 +96,35 @@ def process_command(command):
         print("- Tell you about itself")
         print("- Respond to basic conversations")
         print("- Shut down when asked")
+
+    elif intent == "remember":
+        memory_text = clean_command(command)
+
+        memory_text = memory_text.replace("remember ", "", 1)
+
+        if " is " in memory_text:
+            key, value = memory_text.split(" is ", 1)
+            remember(key, value)
+
+            print("FRIDAY: I'll remember that.")
+        else:
+            print("FRIDAY: Please tell me what you want me to remember.")
+    elif intent == "recall":
+        key = clean_command(command)
+        key = key.replace("what do you remember about ", "", 1)
+        value = recall(key)
+
+        if value is not None:
+            print("FRIDAY: " + key + " is " + value + ".")
+        else:
+            print("FRIDAY: I don't remember that yet.")
+    elif intent == "forget":
+        key = clean_command(command)
+        key = key.replace("forget ", "", 1)
+        if forget(key):
+            print ("FRIDAY: I have forgotten that.")
+        else:
+            print("FRIDAY: I don't have that memory.")
 
     elif intent == "thanks":
         print("FRIDAY: You're welcome.")
